@@ -14,12 +14,19 @@ import time
 DEBUG = False
 
 # В следующей переменной задаем подлежащий удалению шаблон, например f"[s1.eground.org] "
-tmPlate = f"[s1.eground.org] "
+tmPlate = f"[SW.BAND] "
 
 # в следующей переменной задаем корневую папку, с которой начинается обработка всех вложенных в нее подпапок и файлов
 # например f"D:\\Downloads\\PHP.Laravel.Ч6\\15 - Create Scroll To Top"
 # rootdir = os.path.dirname(__file__)
-rootdir = f"D:\\Downloads\\PHP.Laravel.Ч6"
+rootdir = f"E:\\Films\\Курсы\\Frontend\\!Верстка\\Udemy Верстка и создание сайтов полный курс HTML5 CSS (2024)"
+
+# список названий файлов (может быть пустым), которые мы хотим удалить из каждой просматриваемой папки
+listfilestoremove = (
+    'Здесь ждут тебя!.url',
+    'Прочти!.docx',
+    'Качай!.url',
+)
 
 os.chdir(rootdir)
 StartTime = time.time()
@@ -45,11 +52,10 @@ for (p, d, f) in os.walk(rootdir, False):
             else:
                 os.rename(curDir, newDir)
     if DEBUG:
-        print("End_________________" + p)
+        print("End______" + p)
 
 if tmPlate in rootdir:
     newRootDir = rootdir.replace(tmPlate, "")
-    #print(newRootDir)
     os.chdir(os.pardir)
     os.rename(rootdir, newRootDir)
 
