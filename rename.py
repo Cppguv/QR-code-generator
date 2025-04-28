@@ -14,24 +14,32 @@ import time
 DEBUG = False
 
 # В следующей переменной задаем подлежащий удалению шаблон, например f"[s1.eground.org] "
-tmPlate = f"[SW.BAND] "
+tmPlate = f"[Boominfo.ORG] "
 
 # в следующей переменной задаем корневую папку, с которой начинается обработка всех вложенных в нее подпапок и файлов
 # например f"D:\\Downloads\\PHP.Laravel.Ч6\\15 - Create Scroll To Top"
 # rootdir = os.path.dirname(__file__)
-rootdir = f"E:\\Films\\Курсы\\Frontend\\!Верстка\\Udemy Верстка и создание сайтов полный курс HTML5 CSS (2024)"
+rootdir = f"D:\\Downloads\\Архивы курсов\\Skillbox Дизайнер сайтов на Tilda (2020)"
 
 # список названий файлов (может быть пустым), которые мы хотим удалить из каждой просматриваемой папки
 listfilestoremove = (
-    'Здесь ждут тебя!.url',
-    'Прочти!.docx',
-    'Качай!.url',
+    'Открой сокровищницу ИНФО пиратов - Boominfo.PRO.url',
+    'Рабочий Адрес сайта Boominfo.org.url',
+    'Как зайти на сайт с курсами, тренингами, книгами! - boominfo.org.url',
+    'Курсы от Skillbox ЗДЕСЬ - skillbox.shop.url',
+    'Информация.pdf',
 )
 
 os.chdir(rootdir)
 StartTime = time.time()
+# p - текущий обрабатываемый каталог, начинаем с самого нижнего каталога и затем вверх к rootdir, так как в следующей
+# функции os.walk указан параметр False
+# f - список всех файлов в текущей директории p
+# d - список всех директорий в текущем обрабатываемом каталоге p
 for (p, d, f) in os.walk(rootdir, False):
     for curF in f:
+        if curF in listfilestoremove:
+            os.remove(os.path.join(p, curF))
         if tmPlate in curF:
             newF = curF.replace(tmPlate, "")
             if DEBUG:
@@ -39,7 +47,13 @@ for (p, d, f) in os.walk(rootdir, False):
                 # вывод теста зеленым ярким цветом с помощью esc-последовательностей
                 print(f'\033[1;32;40m{newF}\033[0m')
             else:
-                os.rename(os.path.join(p, curF), os.path.join(p, newF))
+                try:
+                    if not os.path.exists(os.path.join(p, newF)):
+                        os.rename(os.path.join(p, curF), os.path.join(p, newF))
+                    else:
+                        print(f'Не могу переименовать, такой файл {newF} уже существует!')
+                except OSError as e:
+                    print(f"Ошибка при попытке переименовать файл {curF}: {e}")
     if DEBUG:
         print("End_________________" + p)
     for curDir in d:
@@ -50,13 +64,25 @@ for (p, d, f) in os.walk(rootdir, False):
                 # вывод теста синим ярким цветом с помощью esc-последовательностей
                 print(f'\033[1;34;40m{newDir}\033[0m')
             else:
-                os.rename(curDir, newDir)
+                try:
+                    if not os.path.exists(os.path.dirname(newDir)):
+                        os.rename(os.path.join(p, curDir), os.path.join(p, newDir))
+                    else:
+                        print(f'Не могу переименовать, такой каталог {newDir} уже существует!')
+                except OSError as e:
+                    print(f"Ошибка при попытке переименовать каталог {curDir}: {e}")
     if DEBUG:
         print("End______" + p)
 
 if tmPlate in rootdir:
     newRootDir = rootdir.replace(tmPlate, "")
     os.chdir(os.pardir)
-    os.rename(rootdir, newRootDir)
+    try:
+        if not os.path.exists(newRootDir):
+            os.rename(rootdir, newRootDir)
+        else:
+            print(f'Не могу переименовать корневой каталог, уже есть директория с таким названием!')
+    except OSError as e:
+        print(f"Ошибка при попытке переименовать корневой каталог: {e}")
 
 print("Скрипт выполнен за %d секунд." % (time.time() - StartTime))
