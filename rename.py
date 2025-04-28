@@ -19,7 +19,7 @@ tmPlate = f"[Boominfo.ORG] "
 # в следующей переменной задаем корневую папку, с которой начинается обработка всех вложенных в нее подпапок и файлов
 # например f"D:\\Downloads\\PHP.Laravel.Ч6\\15 - Create Scroll To Top"
 # rootdir = os.path.dirname(__file__)
-rootdir = f"D:\\Downloads\\Архивы курсов\\Skillbox Дизайнер сайтов на Tilda (2020)"
+rootdir = f"D:\\Downloads\\Архивы курсов\\Tilda"
 
 # список названий файлов (может быть пустым), которые мы хотим удалить из каждой просматриваемой папки
 listfilestoremove = (
